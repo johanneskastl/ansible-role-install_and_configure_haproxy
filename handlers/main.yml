@@ -1,0 +1,7 @@
+---
+# install_and_configure_haproxy/handlers/main.yml
+
+- name: 'restart the haproxy service'
+  ansible.builtin.service:
+    name: "{{ systemd_unit_name }}"
+    state: 'restarted'
