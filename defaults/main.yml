@@ -1,0 +1,6 @@
+---
+# install_and_configure_haproxy/defaults/main.yml
+
+systemd_unit_name: 'haproxy.service'
+package_name: 'haproxy'
+config_file_path: '/etc/haproxy/haproxy.cfg'
