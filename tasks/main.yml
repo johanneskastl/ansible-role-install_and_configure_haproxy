@@ -1,0 +1,23 @@
+---
+# install_and_configure_haproxy/tasks/main.yml
+
+- name: 'Install the haproxy package'
+  ansible.builtin.package:
+    name: "{{ package_name }}"
+    state: 'present'
+
+- name: "Create {{ config_file_path }}"
+  ansible.builtin.template:
+    src: 'etc_haproxy_haproxy.j2'
+    dest: "{{ config_file_path }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+  notify:
+    - 'restart the haproxy service'
+
+- name: 'Start and enable the haproxy service'
+  ansible.builtin.service:
+    name: "{{ systemd_unit_name }}"
+    state: 'started'
+    enabled: 'true'
