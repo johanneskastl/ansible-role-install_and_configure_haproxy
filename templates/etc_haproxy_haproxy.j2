@@ -30,6 +30,7 @@ defaults
   timeout client     50s
   timeout server    450s
 
+{% if publish_stats | bool %}
 listen stats
   bind 0.0.0.0:80
   bind :::80 v6only
@@ -37,3 +38,4 @@ listen stats
   stats uri     /
   stats refresh 5s
   rspadd Server:\ haproxy/2.0
+{% endif %}
