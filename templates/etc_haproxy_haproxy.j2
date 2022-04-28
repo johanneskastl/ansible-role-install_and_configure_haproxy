@@ -39,3 +39,20 @@ listen stats
   stats refresh 5s
   rspadd Server:\ haproxy/2.0
 {% endif %}
+
+{% if destinations is defined %}
+{% for destination in destinations %}
+{% if destination['type'] == "simple" %}
+listen {{ destination['name'] }}
+    bind *:{{ destination['port'] }}
+    option {{ destination['option'] }}
+{% if destination['option'] == "httpchk" %}
+    http-check {{ destination['option_configuration'] }}
+{% endif %}
+    default-server {{ destination['default_server'] }}
+{% for backend in groups[destination['backends_group']] %}
+    server {{ destination['backend_prefix'] | default('') }}{{ backend }} {{ hostvars[backend]['ansible_default_ipv4']['address'] }}:{{ destination['backend_port'] }} {{ destination['backend_options'] }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
