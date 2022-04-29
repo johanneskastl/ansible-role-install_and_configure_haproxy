@@ -4,39 +4,37 @@
 
 global
   log /dev/log daemon
-  maxconn 32768
-  chroot /var/lib/haproxy
-  user haproxy
-  group haproxy
+  maxconn {{ global_maxconn }}
+  chroot {{ chroot_path }}
+  user {{ haproxy_user }}
+  group {{ haproxy_group }}
   daemon
-  stats socket /var/lib/haproxy/stats user haproxy group haproxy mode 0640 level operator
-  tune.bufsize 32768
-  tune.ssl.default-dh-param 2048
-  ssl-default-bind-ciphers ALL:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH
+  stats socket /var/lib/haproxy/stats user {{ haproxy_user }} group {{ haproxy_group }} mode 0640 level operator
+  tune.bufsize {{ global_tune_bufsize }}
+  tune.ssl.default-dh-param {{ global_tune_ssl_default_dh_param }}
+  ssl-default-bind-ciphers {{ global_ssl_default_bind_ciphers }}
 
 defaults
-  log     global
-  mode    http
-  option  log-health-checks
-  option  log-separate-errors
-  option  dontlog-normal
-  option  dontlognull
-  option  httplog
-  option  socket-stats
-  retries 3
-  option  redispatch
-  maxconn 10000
-  timeout connect     5s
-  timeout client     50s
-  timeout server    450s
+  log     {{ defaults_log }}
+  mode    {{ defaults_mode }}
+{% for option in defaults_options %}
+  option  {{ option }}
+{% endfor %}
+  retries {{ defaults_retries }}
+  maxconn {{ defaults_maxconn }}
+  timeout connect {{ defaults_timeout_connect }}
+  timeout client {{ defaults_timeout_client }}
+  timeout server {{ defaults_timeout_server }}
 
 {% if publish_stats | bool %}
 listen stats
-  bind 0.0.0.0:80
-  bind :::80 v6only
+  bind 0.0.0.0:{{ stats_port }}
+{% if publish_stats_ipv6 | bool %}
+  bind :::{{ stats_port }} v6only
+{% endif %}
   stats enable
-  stats uri     /
-  stats refresh 5s
+  stats uri {{ stats_uri }}
+  stats refresh {{ stats_refresh_interval_seconds }}
   rspadd Server:\ haproxy/2.0
 {% endif %}
 
