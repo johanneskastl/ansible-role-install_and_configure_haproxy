@@ -13,7 +13,17 @@ None.
 Role Variables
 --------------
 
-None.
+## General settings
+
+These settings should be identical on most Linux distributions:
+
+- `systemd_unit_name`: name of the systemd service (default: `haproxy.service`)
+- `package_name`: name of the package for haproxy (default: `haproxy`)
+- `config_file_path`: path to the haproxy configuration file (default: `/etc/haproxy/haproxy.cfg`)
+
+## haproxy settings
+
+- `publish_stats`: Whether statistics should be published (default: `true`)
 
 Dependencies
 ------------
