@@ -1,0 +1,7 @@
+---
+# install_and_configure_haproxy/vars/vars_Suse.yml
+
+chroot_path: '/var/lib/haproxy'
+stats_socket_path: '/var/lib/haproxy/stats'
+haproxy_user: 'haproxy'
+haproxy_group: 'haproxy'
