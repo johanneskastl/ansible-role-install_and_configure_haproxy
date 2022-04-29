@@ -6,4 +6,33 @@ package_name: 'haproxy'
 config_file_path: '/etc/haproxy/haproxy.cfg'
 
 # haproxy configuration
+
+## global
+global_maxconn: '32768'
+global_tune_bufsize: '32768'
+global_tune_ssl_default_dh_param: '2048'
+global_ssl_default_bind_ciphers: 'ALL:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH'
+
+# defaults
+defaults_log: 'global'
+defaults_mode: 'http'
+defaults_options:
+  - 'log-health-checks'
+  - 'log-separate-errors'
+  - 'dontlog-normal'
+  - 'dontlognull'
+  - 'httplog'
+  - 'socket-stats'
+  - 'redispatch'
+defaults_retries: '3'
+defaults_maxconn: '10000'
+defaults_timeout_connect: '5s'
+defaults_timeout_client: '50s'
+defaults_timeout_server: '450s'
+
+# statistics
 publish_stats: 'true'
+publish_stats_ipv6: 'true'
+stats_uri: '/'
+stats_port: '80'
+stats_refresh_interval_seconds: '5s'
