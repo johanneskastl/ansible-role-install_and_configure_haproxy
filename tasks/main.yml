@@ -21,7 +21,7 @@
     group: 'root'
     mode: '0600'
   notify:
-    - 'restart the haproxy service'
+    - 'Restart the haproxy service'
 
 - name: 'Start and enable the haproxy service'
   ansible.builtin.service:
